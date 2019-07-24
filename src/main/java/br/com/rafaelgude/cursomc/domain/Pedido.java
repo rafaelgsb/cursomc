@@ -1,8 +1,11 @@
 package br.com.rafaelgude.cursomc.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -131,6 +134,31 @@ public class Pedido implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		var nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		var sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		
+		var sb = new StringBuilder()
+	   .append("Pedido nº: ")
+	   .append(getId())
+	   .append(", Instante: ")
+	   .append(sdf.format(getInstante()))
+	   .append(", Cliente: ")
+	   .append(getCliente().getNome())
+	   .append(", Situação do Pagamento: ")
+	   .append(getPagamento().getEstado().getDescricao())
+	   .append("\nDetalhes:\n");
+		
+		getItens().forEach(item -> sb.append(item.toString()));
+		
+		sb
+		.append("Valor Total: ")
+		.append(nf.format(getValorTotal()));
+		
+		return sb.toString();
 	}
 
 }

@@ -1,6 +1,8 @@
 package br.com.rafaelgude.cursomc.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -107,6 +109,22 @@ public class ItemPedido implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		var nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		
+		return new StringBuilder()
+			   .append(getProduto().getNome())
+			   .append(", Qte: ")
+			   .append(getQuantidade())
+			   .append(", Preço Unitário: ")
+			   .append(nf.format(getPreco()))
+			   .append(", Subtotal: ")
+			   .append(nf.format(getSubTotal()))
+			   .append("\n")
+			   .toString();
 	}
 	
 }
